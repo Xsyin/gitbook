@@ -1,0 +1,701 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>setuid & capabilities · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="栈溢出实验.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="栈溢出实验.html">
+            
+                <a href="栈溢出实验.html">
+            
+                    
+                    stack overflow
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3" data-path="操作系统安全实验二.html">
+            
+                <a href="操作系统安全实验二.html">
+            
+                    
+                    setuid & capabilities
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >setuid & capabilities</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x5B89;&#x5168;&#x5B9E;&#x9A8C;&#x4E8C;">&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x5B89;&#x5168;&#x5B9E;&#x9A8C;&#x4E8C;</h1>
+<ol>
+<li><p><code>passwd&#x200B;</code> &#xFF0C;  &#x200B;<code>sudo&#x200B;</code>&#xFF0C; <code>ping&#x200B;</code> &#x7B49;&#x547D;&#x4EE4;&#x4F1A;&#x4FEE;&#x6539;&#x5173;&#x952E;&#x6587;&#x4EF6;&#xFF0C;&#x786E;&#x4FDD;&#x975E;<code>root&#x200B;</code> &#x7528;&#x6237;&#x65E0;&#x6CD5;&#x4FEE;&#x6539;&#xFF0C;&#x56E0;&#x6B64;&#x9700;&#x8981;&#x8F6C;&#x6362;&#x4E3A;<code>root&#x200B;</code> &#x7528;&#x6237;&#xFF0C;&#x800C;<code>setuid&#x200B;</code> &#x4F4D;&#x53EF;&#x4EE5;&#x8BA9;&#x7528;&#x6237;&#x6682;&#x65F6;&#x83B7;&#x5F97;&#x6587;&#x4EF6;&#x62E5;&#x6709;&#x8005;<code>root&#x200B;</code> &#x7684;&#x8EAB;&#x4EFD;&#x3002;</p>
+<p>&#x4EE5;<code>ping</code> &#x547D;&#x4EE4;&#x4E3A;&#x4F8B;&#xFF0C;&#x5220;&#x9664;<code>s</code> &#x4F4D;&#x540E;&#x65E0;&#x6CD5;<code>ping</code> &#xFF0C;&#x56E0;&#x4E3A;&#x6CA1;&#x6709;&#x6253;&#x5F00;<code>socket</code> &#x7684;&#x6743;&#x9650;&#x3002;&#x800C;&#x5F53;&#x5C06;<code>s</code> &#x4F4D;&#x91CD;&#x65B0;&#x8BBE;&#x7F6E;&#x65F6;&#xFF0C;&#x53C8;&#x53EF;&#x4EE5;<code>ping</code>  &#xFF1A;</p>
+<p><img src="assets/setuid-ping.png" alt="&#x9009;&#x533A;_047"></p>
+<p>&#x4E3A;&#x4E86;&#x6267;&#x884C;&#x6743;&#x9650;&#x68C0;&#x67E5;&#xFF0C;&#x4F20;&#x7EDF;&#x7684; UNIX &#x5B9E;&#x73B0;&#x533A;&#x5206;&#x4E24;&#x79CD;&#x7C7B;&#x578B;&#x7684;&#x8FDB;&#x7A0B;&#xFF1A;&#x7279;&#x6743;&#x8FDB;&#x7A0B;&#xFF08;&#x5176;&#x6709;&#x6548;&#x7528;&#x6237; ID &#x4E3A;0&#xFF0C;&#x79F0;&#x4E3A;&#x8D85;&#x7EA7;&#x7528;&#x6237;&#x6216; root&#xFF09;&#xFF0C;&#x548C;&#x975E;&#x7279;&#x6743;&#x7528;&#x6237;&#xFF08;&#x5176;&#x6709;&#x6548; UID &#x975E;0&#xFF09;&#x3002;&#x7279;&#x6743;&#x8FDB;&#x7A0B;&#x7ED5;&#x8FC7;&#x6240;&#x6709;&#x7684;&#x5185;&#x6838;&#x6743;&#x9650;&#x68C0;&#x67E5;&#xFF0C;&#x800C;&#x975E;&#x7279;&#x6743;&#x8FDB;&#x7A0B;&#x53D7;&#x57FA;&#x4E8E;&#x8FDB;&#x7A0B;&#x7684;&#x8BA4;&#x8BC1;&#x4FE1;&#x606F;&#xFF08;&#x901A;&#x5E38;&#x662F;&#xFF1A;&#x6709;&#x6548; UID&#xFF0C;&#x6709;&#x6548; GID&#xFF0C;&#x548C;&#x8865;&#x5145;&#x7EC4;&#x5217;&#x8868;&#xFF09;&#x7684;&#x5B8C;&#x6574;&#x6743;&#x9650;&#x68C0;&#x67E5;&#x7684;&#x652F;&#x914D;&#x3002;</p>
+<p>&#x81EA;&#x5185;&#x6838; 2.2 &#x7248;&#x672C;&#x5F00;&#x59CB;&#xFF0C;Linux &#x5C06;&#x4F20;&#x7EDF;&#x4E0A;&#x4E0E;&#x8D85;&#x7EA7;&#x7528;&#x6237;&#x5173;&#x8054;&#x7684;&#x7279;&#x6743;&#x5206;&#x4E3A;&#x51E0;&#x4E2A;&#x5355;&#x5143;&#xFF0C;&#x79F0;&#x4E3A; capabilities &#xFF08;&#x6743;&#x80FD;&#xFF09;&#xFF0C;&#x5B83;&#x4EEC;&#x53EF;&#x4EE5;&#x88AB;&#x72EC;&#x7ACB;&#x7684;&#x542F;&#x7528;&#x6216;&#x7981;&#x7528;&#x3002;&#x6743;&#x80FD;&#x662F;&#x6BCF;&#x4E2A;&#x7EBF;&#x7A0B;&#x7684;&#x5C5E;&#x6027;&#x3002;&#x6743;&#x80FD;&#x76F8;&#x5F53;&#x4E8E;&#x89C4;&#x8303;&#x4E86;&#x4F60;&#x8FD9;&#x4E2A;&#x7A0B;&#x5E8F;&#x6240;&#x62E5;&#x6709;&#x7684;&#x6743;&#x9650;&#x3002;&#x76F8;&#x5F53;&#x4E8E;&#x7279;&#x6743;&#x7684;&#x9700;&#x6C42;&#x7684;&#x7EC6;&#x5316;&#x3002;&#x5F53;&#x6267;&#x884C;&#x7279;&#x6743;&#x64CD;&#x4F5C;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x53EF;&#x4EE5;&#x67E5;&#x770B;&#x662F;&#x5426;&#x6709;&#x76F8;&#x5E94;&#x7684;&#x6743;&#x80FD;&#x3002;</p>
+<p><code>ping</code> &#x547D;&#x4EE4;&#x9700;&#x8981;<code>CAP_NET_RAW</code>&#x7684;&#x6743;&#x80FD;&#xFF0C;&#x4F7F;&#x7528;<code>setcap</code>&#x4E3A;&#x5176;&#x6DFB;&#x52A0;&#x6743;&#x80FD;&#xFF1A;</p>
+<p><img src="assets/&#x9009;&#x533A;_051.png" alt="&#x9009;&#x533A;_050"></p>
+<p>&#x53EF;&#x4EE5;<code>ping</code> &#xFF0C;&#x4E14;&#x6CA1;&#x6709;&#x8BBE;&#x7F6E;<code>uid</code> &#x4F4D;&#x3002;</p>
+</li>
+<li><p>&#x4F7F;&#x7528;<code>man capabilities</code>  &#x53EF;&#x4EE5;&#x67E5;&#x770B;&#x6743;&#x80FD;&#x5217;&#x8868;&#x53CA;&#x76F8;&#x5E94;&#x7684;&#x89E3;&#x91CA;&#xFF1A;</p>
+</li>
+<li><p><strong>CAP_AUDIT_CONTROL</strong>&#xFF08;&#x81EA; Linux 2.6.11&#xFF09;
+&#x542F;&#x7528;&#x548C;&#x7981;&#x7528;&#x5185;&#x6838;&#x5BA1;&#x8BA1;&#xFF1B;&#x4FEE;&#x6539;&#x5BA1;&#x8BA1;&#x8FC7;&#x6EE4;&#x5668;&#x89C4;&#x5219;&#xFF1B;&#x63D0;&#x53D6;&#x5BA1;&#x8BA1;&#x72B6;&#x6001;&#x548C;&#x8FC7;&#x6EE4;&#x89C4;&#x5219;&#x3002;</p>
+</li>
+<li><p><strong>CAP_AUDIT_READ</strong>&#xFF08;&#x81EA; Linux 3.16&#xFF09;
+&#x5141;&#x8BB8;&#x901A;&#x8FC7;&#x4E00;&#x4E2A;&#x591A;&#x64AD; netlink socket &#x8BFB;&#x53D6;&#x5BA1;&#x8BA1;&#x65E5;&#x5FD7;&#x3002;</p>
+</li>
+<li><p><strong>CAP_AUDIT_WRITE</strong>&#xFF08;&#x81EA; Linux 2.6.11&#xFF09;
+&#x5411;&#x5185;&#x6838;&#x5BA1;&#x8BA1;&#x65E5;&#x5FD7;&#x5199;&#x8BB0;&#x5F55;&#x3002;</p>
+</li>
+<li><p><strong>CAP_BLOCK_SUSPEND</strong>&#xFF08;&#x81EA; Linux 3.5&#xFF09;
+&#x53EF;&#x4EE5;&#x963B;&#x585E;&#x7CFB;&#x7EDF;&#x6302;&#x8D77;&#xFF08;<strong>epoll</strong>(7) <strong>EPOLLWAKEUP</strong>&#xFF0C;<em>/proc/sys/wake_lock</em>&#xFF09;&#x7684;&#x7279;&#x6027;&#x3002;</p>
+</li>
+<li><p><strong>CAP_CHOWN</strong>
+&#x5BF9;&#x6587;&#x4EF6;&#x7684; UIDs &#x548C; GIDs &#x505A;&#x4EFB;&#x610F;&#x7684;&#x4FEE;&#x6539;&#xFF08;&#x53C2;&#x8003; <strong>chown</strong>(2)&#xFF09;&#x3002;</p>
+</li>
+<li><p><strong>CAP_DAC_OVERRIDE</strong>
+&#x7ED5;&#x8FC7;&#x6587;&#x4EF6;&#x7684;&#x8BFB;&#xFF0C;&#x5199;&#xFF0C;&#x548C;&#x6267;&#x884C;&#x6743;&#x9650;&#x68C0;&#x67E5;&#x3002;&#xFF08;DAC &#x662F; &#x201C;discretionary access control&#x201D; &#x7684;&#x7F29;&#x5199;&#x3002;&#xFF09;</p>
+</li>
+<li><p>CAP_DAC_READ_SEARCH</p>
+<ul>
+<li>&#x7ED5;&#x8FC7;&#x6587;&#x4EF6;&#x7684;&#x8BFB;&#x6743;&#x9650;&#x68C0;&#x67E5;&#x548C;&#x76EE;&#x5F55;&#x7684;&#x8BFB;&#x548C;&#x6267;&#x884C;&#x6743;&#x9650;&#x68C0;&#x67E5;&#xFF1B;</li>
+<li>&#x8C03;&#x7528; <strong>open_by_handle_at</strong>(2)&#x3002;</li>
+</ul>
+</li>
+<li><p>CAP_FOWNER</p>
+<ul>
+<li>&#x5BF9;&#x4E8E;&#x901A;&#x5E38;&#x8981;&#x6C42;&#x8FDB;&#x7A0B;&#x7684;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF; UID &#x4E0E;&#x6587;&#x4EF6;&#x7684; UID &#x5339;&#x914D;&#x7684;&#x64CD;&#x4F5C;&#xFF0C;&#x7ED5;&#x8FC7;&#x6743;&#x9650;&#x68C0;&#x67E5; (&#x6BD4;&#x5982;&#xFF0C;<strong>chmod</strong>(2)&#xFF0C;<strong>utime</strong>(2))&#xFF0C;&#x9664;&#x4E86;&#x90A3;&#x4E9B;&#x5305;&#x542B;&#x5728; <strong>CAP_DAC_OVERRIDE</strong> &#x548C; <strong>CAP_DAC_READ_SEARCH</strong> &#x4E2D;&#x7684;&#x64CD;&#x4F5C;&#xFF1B;</li>
+<li>&#x4E3A;&#x4EFB;&#x610F;&#x6587;&#x4EF6;&#x8BBE;&#x7F6E;&#x6269;&#x5C55;&#x6587;&#x4EF6;&#x5C5E;&#x6027;(&#x53C2;&#x8003; <strong>chattr</strong>(1))&#xFF1B;</li>
+<li>&#x4E3A;&#x4EFB;&#x610F;&#x6587;&#x4EF6;&#x8BBE;&#x7F6E;&#x8BBF;&#x95EE;&#x63A7;&#x5236;&#x8868;(ACLs)&#xFF1B;</li>
+<li>&#x5BF9;&#x6587;&#x4EF6;&#x5220;&#x9664;&#x64CD;&#x4F5C;&#x5FFD;&#x7565;&#x76EE;&#x5F55;&#x7684; sticky &#x4F4D;&#xFF1B;</li>
+<li>&#x5728; <strong>open</strong>(2) &#x548C; <strong>fcntl</strong>(2) &#x4EFB;&#x610F;&#x6587;&#x4EF6;&#x65F6;&#x8BBE;&#x7F6E; <strong>O_NOATIME</strong>&#x3002;</li>
+</ul>
+</li>
+<li><p><strong>CAP_FSETID</strong>
+&#x5F53;&#x6587;&#x4EF6;&#x4FEE;&#x6539;&#x65F6;&#x4E0D;&#x6E05;&#x9664; set-user-ID &#x548C; set-group-ID &#x6A21;&#x5F0F;&#x4F4D;&#xFF1B;&#x4E3A;&#x6587;&#x4EF6; GID &#x4E0E;&#x8C03;&#x7528;&#x8FDB;&#x7A0B;&#x7684;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x6216;&#x8865;&#x5145; GIDs &#x4E0D;&#x5339;&#x914D;&#x7684;&#x6587;&#x4EF6;&#x8BBE;&#x7F6E; set-group-ID &#x4F4D;&#x3002;</p>
+</li>
+<li><p><strong>CAP_IPC_LOCK</strong>
+&#x9501;&#x5B9A;&#x5185;&#x5B58; (<strong>mlock</strong>(2)&#xFF0C;<strong>mlockall</strong>(2)&#xFF0C;<strong>mmap</strong>(2)&#xFF0C;<strong>shmctl</strong>(2))&#x3002;</p>
+</li>
+<li><p><strong>CAP_IPC_OWNER</strong>
+&#x7ED5;&#x8FC7;&#x5BF9; System V IPC &#x5BF9;&#x8C61;&#x7684;&#x64CD;&#x4F5C;&#x7684;&#x6743;&#x9650;&#x68C0;&#x67E5;&#x3002;</p>
+</li>
+<li><p><strong>CAP_KILL</strong>
+&#x7ED5;&#x8FC7;&#x53D1;&#x9001;&#x4FE1;&#x53F7; (&#x53C2;&#x8003; <strong>kill</strong>(2)) &#x65F6;&#x7684;&#x6743;&#x9650;&#x68C0;&#x67E5;&#x3002;&#x8FD9;&#x5305;&#x62EC;&#x4F7F;&#x7528; <strong>ioctl</strong>(2) <strong>KDSIGACCEPT</strong> &#x64CD;&#x4F5C;&#x3002;</p>
+</li>
+<li><p><strong>CAP_LEASE</strong>&#xFF08;&#x81EA; Linux 2.4&#xFF09;
+&#x4E3A;&#x4EFB;&#x610F;&#x6587;&#x4EF6;&#x5EFA;&#x7ACB;&#x79DF;&#x7EA6; (&#x53C2;&#x8003; <strong>fcntl</strong>(2))&#x3002;</p>
+</li>
+<li><p><strong>CAP_LINUX_IMMUTABLE</strong>
+&#x8BBE;&#x7F6E;<strong>FS_APPEND_FL</strong> &#x548C; <strong>FS_IMMUTABLE_FL</strong> inode &#x6807;&#x8BB0; (&#x53C2;&#x8003; <strong>chattr</strong>(1))&#x3002;</p>
+</li>
+<li><p><strong>CAP_MAC_ADMIN</strong>&#xFF08;&#x81EA; Linux 2.6.25&#xFF09;
+&#x8986;&#x76D6;&#x5F3A;&#x5236;&#x8BBF;&#x95EE;&#x63A7;&#x5236; (Mandatory Access Control (MAC)). &#x4E3A; Smack Linux &#x5B89;&#x5168;&#x6A21;&#x5757;(Linux Security Module (LSM)) &#x800C;&#x5B9E;&#x73B0;&#x3002;</p>
+</li>
+<li><p><strong>CAP_MAC_OVERRIDE</strong>&#xFF08;&#x81EA; Linux 2.6.25&#xFF09;
+&#x5141;&#x8BB8; MAC &#x914D;&#x7F6E;&#x6216;&#x72B6;&#x6001;&#x6539;&#x53D8;&#x3002;&#x4E3A; Smack LSM &#x800C;&#x5B9E;&#x73B0;&#x3002;</p>
+</li>
+<li><p><strong>CAP_MKNOD</strong>&#xFF08;&#x81EA; Linux 2.4&#xFF09;
+&#x4F7F;&#x7528; <strong>mknod</strong>(2) &#x521B;&#x5EFA;&#x7279;&#x6B8A;&#x6587;&#x4EF6;&#x3002;</p>
+</li>
+<li><p>CAP_NET_ADMIN</p>
+<p>&#x6267;&#x884C;&#x591A;&#x79CD;&#x7F51;&#x7EDC;&#x6709;&#x5173;&#x7684;&#x64CD;&#x4F5C;&#xFF1A;</p>
+<ul>
+<li>&#x63A5;&#x53E3;&#x914D;&#x7F6E;&#xFF1B;</li>
+<li>IP &#x9632;&#x706B;&#x5899;&#xFF0C;&#x5730;&#x5740;&#x4F2A;&#x88C5;&#xFF0C;&#x548C;&#x8D26;&#x5355;&#x7BA1;&#x7406;&#xFF1B;</li>
+<li>&#x4FEE;&#x6539;&#x8DEF;&#x7531;&#x8868;&#xFF1B;</li>
+<li>&#x4E3A;&#x900F;&#x660E;&#x4EE3;&#x7406;&#x7ED1;&#x5B9A;&#x4EFB;&#x4F55;&#x5730;&#x5740;&#xFF1B;</li>
+<li>&#x8BBE;&#x7F6E;&#x670D;&#x52A1;&#x7C7B;&#x6027; (type-of-service (TOS))&#xFF1B;</li>
+<li>&#x6E05;&#x7406;&#x9A71;&#x52A8;&#x7EDF;&#x8BA1;&#x8D44;&#x6599;&#xFF1B;</li>
+<li>&#x8BBE;&#x7F6E;&#x6DF7;&#x6742;&#x6A21;&#x5F0F;&#xFF1B;</li>
+<li>&#x542F;&#x7528;&#x7EC4;&#x64AD;&#xFF1B;</li>
+<li>&#x4F7F;&#x7528; <strong>setsockopt</strong>(2) &#x8BBE;&#x7F6E;&#x4E0B;&#x5217; socket &#x9009;&#x9879;&#xFF1A;<strong>SO_DEBUG</strong>&#xFF0C;<strong>SO_MARK</strong>&#xFF0C;<strong>SO_PRIORITY</strong> (&#x5728;0&#x5230;6&#x8303;&#x56F4;&#x4E4B;&#x5916;&#x7684;&#x4F18;&#x5148;&#x7EA7;)&#xFF0C;<strong>SO_RCVBUFFORCE</strong>&#xFF0C;&#x548C; <strong>SO_SNDBUFFORCE</strong>&#x3002;</li>
+</ul>
+</li>
+<li><p><strong>CAP_NET_BIND_SERVICE</strong>
+&#x5C06;&#x4E00;&#x4E2A; socket &#x7ED1;&#x5B9A;&#x5230;&#x4E00;&#x4E2A;&#x4E92;&#x8054;&#x7F51;&#x57DF;&#x7279;&#x6743;&#x7AEF;&#x53E3; (&#x7AEF;&#x53E3;&#x53F7;&#x5C0F;&#x4E8E; 1024)&#x3002;</p>
+</li>
+<li><p><strong>CAP_NET_BROADCAST</strong>
+(&#x672A;&#x4F7F;&#x7528;) &#x4F7F; socket &#x53D1;&#x9001;&#x7EC4;&#x64AD;&#xFF0C;&#x5E76;&#x76D1;&#x542C;&#x7EC4;&#x64AD;&#x3002;</p>
+</li>
+<li><p>CAP_NET_RAW</p>
+<ul>
+<li>&#x4F7F;&#x7528; RAW &#x548C; PACKET sockets&#xFF1B;</li>
+<li>&#x4E3A;&#x900F;&#x660E;&#x4EE3;&#x7406;&#x7ED1;&#x5B9A;&#x4EFB;&#x4F55;&#x5730;&#x5740;&#x3002;</li>
+</ul>
+</li>
+<li><p><strong>CAP_SETGID</strong>
+&#x6267;&#x884C;&#x4EFB;&#x610F;&#x7684;&#x8FDB;&#x7A0B; GIDs &#x548C;&#x8865;&#x5145; GID &#x5217;&#x8868;&#x7BA1;&#x7406;&#xFF1B;&#x5F53;&#x901A;&#x8FC7; UNIX &#x57DF; sockets &#x4F20;&#x9012; socket &#x8BA4;&#x8BC1;&#x4FE1;&#x606F;&#x65F6;&#x4F2A;&#x9020; GID&#xFF1B;&#x5728;&#x4E00;&#x4E2A;&#x7528;&#x6237;&#x547D;&#x540D;&#x7A7A;&#x95F4; (&#x53C2;&#x8003; <strong>user_namespaces</strong>(7)) &#x4E2D;&#x5199;&#x5165;&#x7EC4; ID &#x6620;&#x5C04;&#x3002;</p>
+</li>
+<li><p>CAP_SETFCAP (since Linux 2.6.24)
+ &#x8BBE;&#x7F6E;&#x6587;&#x4EF6;&#x7684;&#x6743;&#x80FD;&#x3002;</p>
+</li>
+<li><p>CAP_SETPCAP</p>
+<p>&#x5982;&#x679C;&#x6587;&#x4EF6;&#x6743;&#x80FD;&#x4E0D;&#x53D7;&#x652F;&#x6301;&#xFF1A;&#x6388;&#x4E88;&#x6216;&#x5220;&#x9664;&#x8C03;&#x7528;&#x8005;&#x529F;&#x80FD;&#x8BBE;&#x7F6E;&#x4F4D;&#x6216;&#x6765;&#x81EA;&#x4EFB;&#x4F55;&#x5176;&#x4ED6;&#x8FDB;&#x7A0B;&#x7684;&#x4EFB;&#x4F55;&#x6743;&#x80FD;&#x3002; &#xFF08;&#x5F53;&#x5185;&#x6838;&#x914D;&#x7F6E;&#x4E3A;&#x652F;&#x6301;&#x6587;&#x4EF6;&#x529F;&#x80FD;&#x65F6;&#xFF0C;CAP_SETPCAP&#x7684;&#x6B64;&#x5C5E;&#x6027;&#x4E0D;&#x53EF;&#x7528;&#xFF0C;&#x56E0;&#x4E3A;CAP_SETPCAP&#x5BF9;&#x4E8E;&#x8FD9;&#x6837;&#x7684;&#x5185;&#x6838;&#x5177;&#x6709;&#x5B8C;&#x5168;&#x4E0D;&#x540C;&#x7684;&#x8BED;&#x4E49;&#x3002;&#xFF09;</p>
+<p>&#x5982;&#x679C;&#x652F;&#x6301;&#x6587;&#x4EF6;&#x6743;&#x80FD;&#xFF1A;&#x4ECE;&#x8C03;&#x7528;&#x7EBF;&#x7A0B;&#x7684;&#x8FB9;&#x754C;&#x96C6;&#x4E2D;&#x6DFB;&#x52A0;&#x4EFB;&#x610F;&#x6743;&#x80FD;&#x5230;&#x5176;&#x53EF;&#x7EE7;&#x627F;&#x4F4D;;&#x4ECE;&#x8FB9;&#x754C;&#x96C6;&#x4E2D;&#x5220;&#x9664;&#x6743;&#x80FD;&#xFF08;&#x901A;&#x8FC7;prctl&#xFF08;2&#xFF09;PR_CAPBSET_DROP&#xFF09;;</p>
+<pre><code>      &#x5BF9;securebits&#x6807;&#x5FD7;&#x8FDB;&#x884C;&#x66F4;&#x6539;&#x3002;
+</code></pre></li>
+<li><p>CAP_SETUID</p>
+</li>
+</ol>
+<ul>
+<li><p>CAP_SYS_ADMIN</p>
+<ul>
+<li>&#x6267;&#x884C;&#x4E00;&#x7CFB;&#x5217;&#x7CFB;&#x7EDF;&#x7BA1;&#x7406;&#x64CD;&#x4F5C;&#xFF0C;&#x5305;&#x62EC;&#xFF1A;<strong>quotactl</strong>(2)&#xFF0C;<strong>mount</strong>(2)&#xFF0C;<strong>umount</strong>(2)&#xFF0C;<strong>swapon</strong>(2)&#xFF0C;<strong>swapoff</strong>(2)&#xFF0C;<strong>sethostname</strong>(2)&#xFF0C;&#x548C; <strong>setdomainname</strong>(2)&#xFF1B;</li>
+<li>&#x6267;&#x884C;&#x7279;&#x6743; syslog(2) &#x64CD;&#x4F5C; (&#x81EA; Linux 2.6.37 &#x5F00;&#x59CB;&#xFF0C;&#x5E94;&#x8BE5;&#x4F7F;&#x7528; CAP_SYSLOG &#x6765;&#x5141;&#x8BB8;&#x8FD9;&#x4E00;&#x64CD;&#x4F5C;)&#xFF1B;</li>
+<li>&#x6267;&#x884C; <strong>VM86_REQUEST_IRQ vm86</strong>(2) &#x547D;&#x4EE4;&#xFF1B;</li>
+<li>&#x5BF9;&#x4EFB;&#x610F; System V IPC &#x5BF9;&#x8C61;&#x6267;&#x884C; IPC_SET &#x548C; IPC_RMID &#x64CD;&#x4F5C;&#xFF1B;</li>
+<li>&#x8986;&#x76D6; RLIMIT_NPROC &#x8D44;&#x6E90;&#x9650;&#x5236;&#xFF1B;</li>
+<li>&#x6267;&#x884C; trusted &#x548C; security Extended Attributes (see <strong>xattr</strong>(7)) &#x64CD;&#x4F5C;&#xFF1B;</li>
+<li>&#x4F7F;&#x7528; <strong>lookup_dcookie</strong>(2)&#xFF1B;</li>
+<li>&#x4F7F;&#x7528; ioprio_set(2) &#x6765;&#x5206;&#x914D; IOPRIO_CLASS_RT &#x548C; (Linux 2.6.25 &#x4E4B;&#x524D;) IOPRIO_CLASS_IDLE I/O &#x8C03;&#x5EA6;&#x7C7B;&#x522B;&#xFF1B;</li>
+<li>&#x5F53;&#x901A;&#x8FC7; UNIX &#x57DF; sockets &#x4F20;&#x9012; socket &#x8BA4;&#x8BC1;&#x4FE1;&#x606F;&#x65F6;&#x4F2A;&#x88C5; PID&#xFF1B;</li>
+<li>&#x5728;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x6253;&#x5F00;&#x6587;&#x4EF6; (&#x6BD4;&#x5982;&#xFF0C;<strong>accept</strong>(2)&#xFF0C;<strong>execve</strong>(2)&#xFF0C;<strong>open</strong>(2)&#xFF0C;<strong>pipe</strong>(2)) &#x65F6;&#xFF0C;&#x8D85;&#x51FA; /proc/sys/fs/file-max&#xFF0C;&#x7CFB;&#x7EDF;&#x8303;&#x56F4;&#x5185;&#x6253;&#x5F00;&#x6587;&#x4EF6;&#x6570;&#x7684;&#x9650;&#x5236;&#xFF1B;</li>
+<li>&#x901A;&#x8FC7; <strong>clone</strong>(2) &#x548C; <strong>unshare</strong>(2) &#x4F7F;&#x7528; <strong>CLONE_*</strong> &#x6807;&#x8BB0;&#x521B;&#x5EFA;&#x65B0;&#x7684;&#x547D;&#x540D;&#x7A7A;&#x95F4;&#xFF08;&#x4F46;&#x662F;&#xFF0C;&#x81EA;&#x4ECE; Linux 3.8 &#x5F00;&#x59CB;&#xFF0C;&#x521B;&#x5EFA;&#x547D;&#x540D;&#x7A7A;&#x95F4;&#x4E0D;&#x9700;&#x8981;&#x4EFB;&#x4F55;&#x6743;&#x80FD;&#xFF09;&#xFF1B;</li>
+<li>&#x8C03;&#x7528; <strong>perf_event_open</strong>(2)&#xFF1B;</li>
+<li>&#x8BBF;&#x95EE;&#x7279;&#x6743; perf &#x4E8B;&#x4EF6;&#x4FE1;&#x606F;&#xFF1B;</li>
+<li>&#x8C03;&#x7528; <strong>setns</strong>(2) (&#x5728;&#x76EE;&#x6807;&#x547D;&#x540D;&#x7A7A;&#x95F4;&#x4E2D;&#x9700;&#x8981; CAP_SYS_ADMIN)&#xFF1B;</li>
+<li>&#x8C03;&#x7528; <strong>fanotify_init</strong>(2)&#xFF1B;</li>
+<li>&#x8C03;&#x7528; <strong>bpf</strong>(2)&#xFF1B;</li>
+<li>&#x6267;&#x884C; <strong>KEYCTL_CHOWN</strong> &#x548C; <strong>KEYCTL_SETPERM keyctl</strong>(2) &#x64CD;&#x4F5C;&#xFF1B;</li>
+<li>&#x6267;&#x884C; <strong>madvise</strong>(2) <strong>MADV_HWPOISON</strong> &#x64CD;&#x4F5C;&#xFF1B;</li>
+<li>&#x4F7F;&#x7528; <strong>TIOCSTI ioctl</strong>(2) &#x5411;&#x4E00;&#x4E2A;&#x7EC8;&#x7AEF;&#x7684;&#x8F93;&#x5165;&#x961F;&#x5217;&#x4E2D;&#x63D2;&#x5165;&#x5B57;&#x7B26;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x8C03;&#x7528;&#x8005;&#x7684;&#x63A7;&#x5236;&#x7EC8;&#x7AEF;&#xFF1B;</li>
+<li>&#x4F7F;&#x7528;&#x5E9F;&#x5F03;&#x7684; <strong>nfsservctl</strong> (2) &#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#xFF1B;</li>
+<li>&#x4F7F;&#x7528;&#x5E9F;&#x5F03;&#x7684; <strong>bdflush</strong> (2) &#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#xFF1B;</li>
+<li>&#x6267;&#x884C;&#x5404;&#x79CD;&#x7279;&#x6743;&#x7684;&#x5757;&#x8BBE;&#x5907; <strong>ioctl</strong>(2) &#x64CD;&#x4F5C;&#xFF1B;</li>
+<li>&#x6267;&#x884C;&#x5404;&#x79CD;&#x7279;&#x6743;&#x7684;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF; <strong>ioctl</strong>(2) &#x64CD;&#x4F5C;&#xFF1B;</li>
+<li>&#x5BF9;&#x8BB8;&#x591A;&#x8BBE;&#x5907;&#x9A71;&#x52A8;&#x6267;&#x884C;&#x7BA1;&#x7406;&#x64CD;&#x4F5C;&#x3002;</li>
+</ul>
+</li>
+<li><p><strong>CAP_SYS_BOOT</strong>
+&#x4F7F;&#x7528; <strong>reboot</strong>(2) &#x548C; <strong>kexec_load</strong>(2)&#x3002;</p>
+</li>
+<li><p><strong>CAP_SYS_CHROOT</strong>
+&#x4F7F;&#x7528; <strong>chroot</strong>(2)&#x3002;</p>
+</li>
+<li><p><strong>CAP_SYS_MODULE</strong>
+&#x52A0;&#x8F7D;&#x548C;&#x5378;&#x8F7D;&#x5185;&#x6838;&#x6A21;&#x5757;(&#x53C2;&#x8003; <strong>init_module</strong>(2) &#x548C; <strong>delete_module</strong>(2))&#xFF1B;&#x5728; 2.6.25 &#x4E4B;&#x524D;&#x7684;&#x5185;&#x6838;&#x4E2D;&#xFF1A;&#x4ECE;&#x7CFB;&#x7EDF;&#x8303;&#x56F4;&#x5185;&#x7684;&#x6743;&#x80FD;&#x8FB9;&#x754C;&#x96C6;&#x5408;&#x4E2D;&#x4E22;&#x5F03;&#x6743;&#x80FD;&#x3002;</p>
+</li>
+<li><p>CAP_SYS_NICE</p>
+<ul>
+<li>&#x89E6;&#x53D1;&#x8FDB;&#x7A0B; nice &#x503C; (<strong>nice</strong>(2)&#xFF0C;<strong>setpriority</strong>(2)) &#x548C;&#x4E3A;&#x4EFB;&#x610F;&#x8FDB;&#x7A0B;&#x6539;&#x53D8; nice &#x503C;&#xFF1B;</li>
+<li>&#x4E3A;&#x8C03;&#x7528;&#x8FDB;&#x7A0B;&#x8BBE;&#x7F6E;&#x5B9E;&#x65F6;&#x8C03;&#x5EA6;&#x7B56;&#x7565;&#xFF0C;&#x53CA;&#x4E3A;&#x4EFB;&#x610F;&#x8FDB;&#x7A0B;&#x8BBE;&#x7F6E;&#x8C03;&#x5EA6;&#x7B56;&#x7565;&#x548C;&#x4F18;&#x5148;&#x7EA7; (<strong>sched_setscheduler</strong>(2)&#xFF0C;<strong>sched_setparam</strong>(2)&#xFF0C;<strong>shed_setattr</strong>(2))&#xFF1B;</li>
+<li>&#x4E3A;&#x4EFB;&#x610F;&#x8FDB;&#x7A0B;&#x8BBE;&#x7F6E; CPU affinity (<strong>sched_setaffinity</strong>(2))&#xFF1B;</li>
+<li>&#x4E3A;&#x4EFB;&#x610F;&#x8FDB;&#x7A0B;&#x8BBE;&#x7F6E; I/O &#x8C03;&#x5EA6;&#x7C7B;&#x522B;&#x548C;&#x4F18;&#x5148;&#x7EA7; (<strong>ioprio_set</strong>(2))&#xFF1B;</li>
+<li>&#x5BF9;&#x4EFB;&#x610F;&#x8FDB;&#x7A0B;&#x5E94;&#x7528; <strong>migrate_pages</strong>(2) &#x5E76;&#x5141;&#x8BB8;&#x8FDB;&#x7A0B;&#x88AB;&#x8FC1;&#x79FB;&#x5230;&#x4EFB;&#x610F;&#x8282;&#x70B9;&#xFF1B;</li>
+<li>&#x5BF9;&#x4EFB;&#x610F;&#x8FDB;&#x7A0B;&#x5E94;&#x7528; <strong>move_pages</strong>(2)&#xFF1B;</li>
+<li>&#x5728; <strong>mbind</strong>(2) &#x548C; <strong>move_pages</strong>(2) &#x4E2D;&#x4F7F;&#x7528; <strong>MPOL_MF_MOVE_ALL</strong> &#x6807;&#x8BB0;&#x3002;</li>
+</ul>
+</li>
+<li><p><strong>CAP_SYS_PACCT</strong>
+&#x4F7F;&#x7528; <strong>acct</strong>(2)&#x3002;</p>
+</li>
+<li><p>CAP_SYS_PTRACE</p>
+<ul>
+<li>&#x4F7F;&#x7528; <strong>ptrace</strong>(2) &#x8FFD;&#x8E2A;&#x4EFB;&#x610F;&#x8FDB;&#x7A0B;&#xFF1B;</li>
+<li>&#x5BF9;&#x4EFB;&#x610F;&#x8FDB;&#x7A0B;&#x5E94;&#x7528; <strong>get_robust_list</strong>(2)&#xFF1B;</li>
+<li>&#x4F7F;&#x7528; <strong>process_vm_readv</strong>(2) &#x548C; <strong>process_vm_writev</strong>(2) &#x540C;&#x4EFB;&#x610F;&#x8FDB;&#x7A0B;&#x7684;&#x5185;&#x5B58;&#x4F20;&#x8F93;&#x6570;&#x636E;&#xFF1B;</li>
+<li>&#x4F7F;&#x7528; <strong>kcmp</strong>(2) &#x68C0;&#x67E5;&#x8FDB;&#x7A0B;&#x3002;</li>
+</ul>
+</li>
+<li><p>CAP_SYS_RAWIO</p>
+<ul>
+<li>&#x6267;&#x884C; I/O &#x7AEF;&#x53E3;&#x64CD;&#x4F5C; (<strong>iopl</strong>(2) &#x548C; <strong>ioperm</strong>(2))&#xFF1B;</li>
+<li>&#x8BBF;&#x95EE; /proc/kcore&#xFF1B;</li>
+<li>&#x4F7F;&#x7528; <strong>FIBMAP ioctl</strong>(2) &#x64CD;&#x4F5C;&#xFF1B;</li>
+<li>&#x6253;&#x5F00;&#x8BBE;&#x5907;&#x8BBF;&#x95EE; x86 &#x6A21;&#x5F0F;&#x7279;&#x6709;&#x5BC4;&#x5B58;&#x5668; (MSRs&#xFF0C;&#x53C2;&#x8003; <strong>msr</strong>(4))&#xFF1B;</li>
+<li>&#x66F4;&#x65B0; /proc/sys/vm/mmap_min_addr&#xFF1B;</li>
+<li>&#x5728;&#x5730;&#x5740;&#x4F4E;&#x4E8E; /proc/sys/vm/mmap_min_addr &#x7684;&#x4F4D;&#x7F6E;&#x521B;&#x5EFA;&#x5185;&#x5B58;&#x6620;&#x5C04;&#xFF1B;</li>
+<li>&#x5728; /proc/bus/pci &#x4E2D;&#x6620;&#x5C04;&#x6587;&#x4EF6;&#xFF1B;</li>
+<li>&#x6253;&#x5F00; /dev/mem &#x548C; /dev/kmem&#xFF1B;</li>
+<li>&#x6267;&#x884C;&#x5404;&#x79CD; SCSI &#x8BBE;&#x5907;&#x547D;&#x4EE4;&#xFF1B;</li>
+<li>&#x5728; <strong>hpsa</strong>(4) &#x548C; <strong>cciss</strong>(4) &#x8BBE;&#x5907;&#x4E0A;&#x6267;&#x884C;&#x67D0;&#x4E00;&#x64CD;&#x4F5C;&#xFF1B;</li>
+<li>&#x5728;&#x5176;&#x5B83;&#x8BBE;&#x5907;&#x4E0A;&#x6267;&#x884C;&#x4E00;&#x7CFB;&#x5217;&#x8BBE;&#x5907;&#x7279;&#x6709;&#x64CD;&#x4F5C;&#x3002;</li>
+</ul>
+</li>
+<li><p>CAP_SYS_RESOURCE</p>
+<ul>
+<li>&#x4F7F;&#x7528; ext2 &#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x4E0A;&#x7684;&#x9884;&#x7559;&#x7A7A;&#x95F4;&#xFF1B;</li>
+<li>&#x6267;&#x884C; ioctl(2) &#x8C03;&#x7528;&#x63A7;&#x5236; ext3 &#x65E5;&#x5FD7;&#xFF1B;</li>
+<li>&#x8986;&#x76D6;&#x78C1;&#x76D8;&#x914D;&#x989D;&#x9650;&#x5236;&#xFF1B;</li>
+<li>&#x589E;&#x52A0;&#x8D44;&#x6E90;&#x9650;&#x5236; (&#x53C2;&#x8003; <strong>setrlimit</strong>(2))&#xFF1B;</li>
+<li>&#x8986;&#x76D6; RLIMIT_NPROC &#x8D44;&#x6E90;&#x9650;&#x5236;&#xFF1B;</li>
+<li>&#x5728;&#x7EC8;&#x7AEF;&#x5206;&#x914D;&#x4E0A;&#x8986;&#x76D6;&#x6700;&#x5927;&#x7684;&#x7EC8;&#x7AEF;&#x6570;&#xFF1B;</li>
+<li>&#x8986;&#x76D6;&#x6700;&#x5927;&#x7684; keymaps &#x4E2A;&#x6570;&#xFF1B;</li>
+<li>&#x5141;&#x8BB8;&#x5B9E;&#x65F6;&#x65F6;&#x949F;&#x4E2D;&#x65AD;&#x5927;&#x4E8E;64 hz&#xFF1B;</li>
+<li>&#x89E6;&#x53D1;&#x4E00;&#x4E2A; System V &#x6D88;&#x606F;&#x961F;&#x5217;&#x7684; msg_qbytes &#x9650;&#x5236;&#x8D85;&#x8FC7; /proc/sys/kernel/msgmnb &#x4E2D;&#x7684;&#x9650;&#x5236; (&#x53C2;&#x8003; <strong>msgop</strong>(2) &#x548C; <strong>msgctl</strong>(2))&#xFF1B;</li>
+<li>&#x5F53;&#x4F7F;&#x7528; <strong>F_SETPIPE_SZ fcntl</strong>(2) &#x547D;&#x4EE4;&#x8BBE;&#x7F6E;&#x4E00;&#x4E2A;&#x7BA1;&#x9053;&#x7684;&#x5BB9;&#x91CF;&#x65F6;&#x8986;&#x76D6; /proc/sys/fs/pipe-size-max &#x7684;&#x9650;&#x5236;&#xFF1B;</li>
+<li>&#x4F7F;&#x7528; <strong>F_SETPIPE_SZ</strong> &#x589E;&#x52A0;&#x7BA1;&#x9053;&#x7684;&#x5BB9;&#x91CF;&#x8D85;&#x51FA; /proc/sys/fs/pipe-max-size &#x6307;&#x5B9A;&#x7684;&#x9650;&#x5236;&#xFF1B;</li>
+<li>&#x5F53;&#x521B;&#x5EFA; POSIX &#x6D88;&#x606F;&#x961F;&#x5217; (&#x53C2;&#x8003; <strong>mq_overview</strong>(7)) &#x65F6;&#x8986;&#x76D6; /proc/sys/fs/mqueue/queues_max &#x7684;&#x9650;&#x5236;&#xFF1B;</li>
+<li>&#x4F7F;&#x7528; <strong>prctl</strong>(2) <strong>PR_SET_MM</strong> &#x64CD;&#x4F5C;&#xFF1B;</li>
+<li>&#x8BBE;&#x7F6E; /proc/PID/oom_score_adj &#x4E3A;&#x4E00;&#x4E2A;&#x5C0F;&#x4E8E;&#x7531;&#x4E00;&#x4E2A;&#x5177;&#x6709; CAP_SYS_RESOURCE &#x7684;&#x8FDB;&#x7A0B;&#x6700;&#x8FD1;&#x8BBE;&#x7F6E;&#x7684;&#x503C;&#x7684;&#x503C;&#x3002;</li>
+</ul>
+</li>
+<li><p><strong>CAP_SYS_TIME</strong>
+&#x8BBE;&#x7F6E;&#x7CFB;&#x7EDF;&#x65F6;&#x949F; (<strong>settimeofday</strong>(2)&#xFF0C;<strong>stime</strong>(2)&#xFF0C;<strong>adjtimex</strong>(2))&#xFF1B;&#x8BBE;&#x7F6E;&#x5B9E;&#x65F6; (&#x786C;&#x4EF6;) &#x65F6;&#x949F;&#x3002;</p>
+</li>
+<li><p><strong>CAP_SYS_TTY_CONFIG</strong>
+&#x4F7F;&#x7528; <strong>vhangup</strong>(2)&#xFF1B;&#x5BF9;&#x865A;&#x62DF;&#x7EC8;&#x7AEF;&#x4F7F;&#x7528;&#x5404;&#x79CD;&#x7279;&#x6743; <strong>ioctl</strong>(2) &#x64CD;&#x4F5C;&#x3002;</p>
+</li>
+<li><p>CAP_SYSLOG</p>
+<p>(&#x81EA; Linux 2.6.37)</p>
+<ul>
+<li>&#x6267;&#x884C;&#x7279;&#x6743; <strong>syslog</strong>(2) &#x64CD;&#x4F5C;&#x3002;&#x53C2;&#x8003; <strong>syslog</strong>(2) &#x6765;&#x83B7;&#x53D6;&#x54EA;&#x4E9B;&#x64CD;&#x4F5C;&#x9700;&#x8981;&#x7279;&#x6743;&#x7684;&#x4FE1;&#x606F;&#xFF1B;</li>
+<li>&#x5F53; /proc/sys/kernel/kptr_restrict &#x503C;&#x4E3A; 1 &#x65F6;&#xFF0C;&#x67E5;&#x770B;&#x901A;&#x8FC7; /proc &#x548C;&#x5176;&#x5B83;&#x63A5;&#x53E3;&#x66B4;&#x9732;
+&#x7684;&#x5185;&#x6838;&#x5730;&#x5740;&#x3002;(&#x53C2;&#x8003; <strong>proc</strong>(5) &#x4E2D; kptr_restrict &#x7684;&#x8BA8;&#x8BBA;&#x3002;)</li>
+</ul>
+</li>
+<li><p><strong>CAP_WAKE_ALARM</strong> (&#x81EA; Linux 3.0)
+&#x89E6;&#x53D1;&#x5C06;&#x5524;&#x9192;&#x7CFB;&#x7EDF;&#x7684;&#x4E1C;&#x897F; (&#x8BBE;&#x7F6E; CLOCK_REALTIME_ALARM &#x548C; CLOCK_BOOTTIME_ALARM &#x5B9A;&#x65F6;&#x5668;)</p>
+</li>
+<li><p>&#x627E;&#x51FA;&#x6240;&#x6709;&#x8BBE;&#x7F6E;<code>uid</code> &#x4F4D;&#x7A0B;&#x5E8F;&#xFF0C;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;</p>
+</li>
+</ul>
+<pre><code>find / -perm /u=s
+find / -perm -4000
+</code></pre><p>&#x7ED3;&#x679C;&#x5982;&#x4E0B;&#xFF1A;</p>
+<p><img src="assets/&#x9009;&#x533A;_048.png" alt="&#x9009;&#x533A;_048"></p>
+<p><img src="assets/&#x9009;&#x533A;_049.png" alt="&#x9009;&#x533A;_049"></p>
+<p>&#x90E8;&#x5206;&#x9700;&#x8981;&#x7684;&#x6743;&#x80FD;&#x5982;&#x4E0B;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th>&#x7A0B;&#x5E8F;</th>
+<th>&#x9700;&#x8981;&#x7684;&#x6743;&#x80FD;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/bin/ping</td>
+<td>CAP_NET_RAW</td>
+</tr>
+<tr>
+<td>/bin/mount</td>
+<td>CAP_SYS_ADMIN</td>
+</tr>
+<tr>
+<td>/bin/su</td>
+<td>CAP_DAC_OVERRIDE,CAP_SETGID,CAP_SETUID</td>
+</tr>
+<tr>
+<td>/bin/fusermount</td>
+<td>CAP_SYS_ADMIN</td>
+</tr>
+<tr>
+<td>/bin/umount</td>
+<td>CAP_SYS_ADMIN</td>
+</tr>
+<tr>
+<td>/usr/bin/passwd</td>
+<td>CAP_CHOWN ,CAP_DAC_OVERRIDE ,CAP_FOWNER</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><p>&#x5728;linux&#x4E2D;&#xFF0C;&#x6587;&#x4EF6;&#x6743;&#x80FD;&#x6709;&#x5982;&#x4E0B;&#x4E09;&#x79CD;&#xFF1A;</p>
+<ul>
+<li>effective&#xFF1A;&#x5F53;&#x524D;&#x6709;&#x6548;&#x7684;&#x6743;&#x80FD;&#xFF0C;&#x6267;&#x884C;&#x67D0;&#x7279;&#x6743;&#x64CD;&#x4F5C;&#x65F6;&#xFF0C;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x68C0;&#x67E5;cap_effective&#x7684;&#x5BF9;&#x5E94;&#x4F4D;&#x662F;&#x5426;&#x6709;&#x6548;,&#x800C;&#x4E0D;&#x518D;&#x662F;&#x68C0;&#x67E5;&#x8FDB;&#x7A0B;&#x7684;&#x6709;&#x6548;UID&#x662F;&#x5426;&#x4E3A;0&#x3002;</li>
+<li>permitted&#xFF1A;&#x5F53;&#x524D;&#x8FDB;&#x7A0B;&#x6240;&#x6709;&#x80FD;&#x4F7F;&#x7528;&#x7684;&#x80FD;&#x529B;&#xFF0C;effective&#x5305;&#x542B;&#x4E8E;permitted</li>
+<li>inheritable&#xFF1A;&#x53EF;&#x4EE5;&#x88AB;&#x7EE7;&#x627F;&#x7684;&#x80FD;&#x529B;</li>
+</ul>
+<p>linux&#x7A0B;&#x5E8F;&#x8C03;&#x7528;&#x5B50;&#x7A0B;&#x5E8F;&#xFF0C;&#x6743;&#x80FD;&#x53D8;&#x6362;&#x516C;&#x5F0F;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-python">P&#x2019;(ambient) = (file is privileged) ? 0 : P(ambient)
+P&apos;(permitted) = (P(inheritable) &amp; F(inheritable)) | (F(permitted) &amp; cap_bset)| P&#x2019;(ambient)
+P&apos;(effective) = F(effective) ? P&apos;(permitted) : P&#x2019;(ambient)
+P&apos;(inheritable) = P(inheritable) [i.e., unchanged]
+</code></pre>
+<p>&#x5176;&#x4E2D;&#xFF1A;</p>
+<ul>
+<li>P denotes the value of a thread capability set before the execve(2)</li>
+<li>P&#x2019; denotes the value of a capability set after the execve(2)</li>
+<li>F denotes a file capability set</li>
+<li>cap_bset is the value of the capability bounding set (described below).</li>
+</ul>
+<p>A privileged file is one that has capabilities or has the set-user-ID or set-group-ID bit set.</p>
+</li>
+</ol>
+<p>&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x7A0B;&#x5E8F;&#x5176;&#x6EE1;&#x8DB3;&#x4EE5;&#x4E0B;&#x7684;&#x529F;&#x80FD;&#xFF1A;</p>
+<ul>
+<li>&#x80FD;&#x591F;&#x6C38;&#x4E45;&#x7684;&#x5220;&#x9664;&#x5176;&#x5B50;&#x8FDB;&#x7A0B;&#x7684;&#x67D0;&#x4E2A;&#x6743;&#x80FD;&#x3002;</li>
+<li>&#x80FD;&#x6682;&#x65F6;&#x6027;&#x7684;&#x5220;&#x9664;&#x5176;&#x5B50;&#x8FDB;&#x7A0B;&#x7684;&#x67D0;&#x4E2A;&#x6743;&#x80FD;&#x3002;</li>
+<li>&#x80FD;&#x8BA9;&#x4E0A;&#x9762;&#x88AB;&#x6682;&#x65F6;&#x6027;&#x5220;&#x9664;&#x7684;&#x6743;&#x80FD;&#x91CD;&#x65B0;&#x83B7;&#x5F97;</li>
+</ul>
+<p>&#x4EE5;ping&#x4E3A;&#x4F8B;&#xFF0C;&#x6211;&#x4EEC;&#x77E5;&#x9053;ping&#x9700;&#x8981;&#x7684;&#x6743;&#x80FD;&#x4E3A;cap_net_raw&#xFF0C;&#x4E3A;&#x4E86;&#x80FD;&#x5728;execve&#x540E;&#x6267;&#x884C;ping&#xFF0C;&#x5373;execve&#x4E2D;&#x7684;ping&#x6709;cap_net_raw&#x6743;&#x80FD;&#xFF0C;&#x6839;&#x636E;&#x4E0A;&#x9762;&#x7684;&#x53D8;&#x6362;&#x89C4;&#x5219;&#xFF1A;</p>
+<ul>
+<li>&#x8BBE;&#x7F6E;/bin/ping&#x6743;&#x80FD;&#x4E3A;cap_net_raw+ei&#xFF0C;&#x4F7F;&#x5F97;&#x53EF;&#x4EE5;&#x7EE7;&#x627F;<ul>
+<li>sudo setcap cap_net_raw+ei /bin/ping</li>
+</ul>
+</li>
+<li>&#x8BBE;&#x7F6E;&#x5F53;&#x524D;&#x7684;&#x8FDB;&#x7A0B;&#x7684;&#x6743;&#x80FD;&#x6709;cap_net_raw+i&#x6743;&#x80FD;</li>
+</ul>
+<p>&#x6C38;&#x4E45;&#x5220;&#x9664;&#x5B50;&#x8FDB;&#x7A0B;&#x7684;&#x6743;&#x80FD;&#x5C31;&#x79FB;&#x9664;effective&#x548C;inheritable&#x3001;permitted&#x7684;&#xFF0C;&#x6682;&#x65F6;&#x6027;&#x5220;&#x9664;&#x5C31;&#x79FB;&#x9664;effective&#x548C;inheritable&#x7684;&#xFF0C;&#x6062;&#x590D;&#x6682;&#x65F6;&#x6027;&#x5220;&#x9664;&#x7684;&#x5C31;&#x6DFB;&#x52A0;&#x8FDB;effective&#x548C;inheritable&#x3002;</p>
+<pre><code class="lang-c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/types.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unistd.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/capability.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/prctl.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">undef</span> _POSIX_SOURCE</span>
+
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">int</span> errno;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">whoami</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;uid=%i  euid=%i  gid=%i\n&quot;</span>, getuid(), geteuid(), getgid());
+}
+
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">listCaps</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">cap_t</span> caps = cap_get_proc();
+    <span class="hljs-keyword">ssize_t</span> y = <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;The Process %d was give capabilities %s\n&quot;</span>,(<span class="hljs-keyword">int</span>) getpid(), cap_to_text(caps, &amp;y));
+    fflush(<span class="hljs-number">0</span>);
+    cap_free(caps);
+}
+
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">do_ping</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">if</span>(!fork()){
+        whoami();
+        listCaps();
+        execlp(<span class="hljs-string">&quot;ping&quot;</span>,<span class="hljs-string">&quot;ping&quot;</span>,<span class="hljs-string">&quot;-c 1&quot;</span>,<span class="hljs-string">&quot;localhost&quot;</span>,<span class="hljs-literal">NULL</span>);
+    }
+}
+
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">if</span>(getuid() != <span class="hljs-number">0</span>){
+        <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;&#x8BF7;&#x4F7F;&#x7528;sudo&#x6267;&#x884C;&#x672C;&#x7A0B;&#x5E8F;&quot;</span>);
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+    }
+
+    <span class="hljs-keyword">cap_value_t</span> cap_values[] = {CAP_SETUID, CAP_SETGID, CAP_SETPCAP ,CAP_NET_RAW};
+
+    <span class="hljs-keyword">cap_t</span> caps = cap_init();
+    cap_set_flag(caps, CAP_PERMITTED, <span class="hljs-number">4</span>, cap_values, CAP_SET);
+    cap_set_flag(caps, CAP_EFFECTIVE, <span class="hljs-number">4</span>, cap_values, CAP_SET);
+    cap_set_proc(caps);
+    prctl(PR_SET_KEEPCAPS, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+    cap_free(caps);
+
+    setgid(<span class="hljs-number">1000</span>);
+    setuid(<span class="hljs-number">1000</span>);
+
+    caps = cap_get_proc();
+    cap_set_flag(caps, CAP_EFFECTIVE, <span class="hljs-number">4</span>, cap_values, CAP_SET);
+    cap_set_flag(caps, CAP_INHERITABLE, <span class="hljs-number">4</span>, cap_values, CAP_SET);
+    cap_set_proc(caps);
+    cap_free(caps);
+    whoami();
+    listCaps();
+}
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">printInfo</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;\n------&#x6743;&#x80FD;&#x6D4B;&#x8BD5;&#x5C0F;&#x7A0B;&#x5E8F;------\n\
+&#x8BF7;&#x8F93;&#x5165;&#x5982;&#x4E0B;&#x5B57;&#x7B26;:\n\
+1 : &#x6C38;&#x4E45;&#x7684;&#x5220;&#x9664;&#x5176;&#x5B50;&#x8FDB;&#x7A0B;&#x7684;&#x67D0;&#x4E2A;&#x6743;&#x80FD;\n\
+2 : &#x6682;&#x65F6;&#x6027;&#x7684;&#x5220;&#x9664;&#x5176;&#x5B50;&#x8FDB;&#x7A0B;&#x7684;&#x67D0;&#x4E2A;&#x6743;&#x80FD;\n\
+3 : &#x6682;&#x65F6;&#x6027;&#x5220;&#x9664;&#x7684;&#x6743;&#x80FD;&#x91CD;&#x65B0;&#x83B7;&#x5F97;\n\
+4 : ping -c 1 localhost\n\
+5 : &#x67E5;&#x770B;&#x5F53;&#x524D;&#x6743;&#x80FD;\n\
+q : &#x9000;&#x51FA;\n\
+---------------------------\n&quot;</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> **argv)</span>
+</span>{
+    init();
+    <span class="hljs-keyword">char</span> line[<span class="hljs-number">128</span>];
+    printInfo();
+    <span class="hljs-keyword">while</span>(fgets(line, <span class="hljs-keyword">sizeof</span>(line), <span class="hljs-built_in">stdin</span>)){
+        <span class="hljs-keyword">char</span> cmd = line[<span class="hljs-number">0</span>];
+
+        <span class="hljs-keyword">if</span>(cmd == <span class="hljs-string">&apos;1&apos;</span> || cmd == <span class="hljs-string">&apos;2&apos;</span> || cmd == <span class="hljs-string">&apos;3&apos;</span>){
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;&#x8F93;&#x5165;&#x8981;&#x64CD;&#x4F5C;&#x7684;&#x6743;&#x80FD;&#x540D;&#xFF0C;&#x5982;cap_net_raw\n&quot;</span>);
+            fgets(line, <span class="hljs-keyword">sizeof</span>(line), <span class="hljs-built_in">stdin</span>);
+            line[<span class="hljs-built_in">strlen</span>(line) - <span class="hljs-number">1</span>] = <span class="hljs-string">&apos;\0&apos;</span>;
+            <span class="hljs-keyword">cap_value_t</span> temp;
+            <span class="hljs-keyword">if</span>(cap_from_name(line, &amp;temp) &lt; <span class="hljs-number">0</span>){
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Error capability name\n&quot;</span>);
+            }
+            <span class="hljs-keyword">else</span>{
+                <span class="hljs-keyword">cap_t</span> caps = cap_get_proc();
+
+                <span class="hljs-keyword">if</span>(cmd == <span class="hljs-string">&apos;3&apos;</span>){
+                    cap_set_flag(caps, CAP_EFFECTIVE, <span class="hljs-number">1</span>, &amp;temp, CAP_SET);
+                    cap_set_flag(caps, CAP_INHERITABLE, <span class="hljs-number">1</span>, &amp;temp, CAP_SET);
+                }
+                <span class="hljs-keyword">else</span>{
+                    cap_set_flag(caps, CAP_EFFECTIVE, <span class="hljs-number">1</span>, &amp;temp, CAP_CLEAR);
+                    cap_set_flag(caps, CAP_INHERITABLE, <span class="hljs-number">1</span>, &amp;temp, CAP_CLEAR);
+                    <span class="hljs-keyword">if</span>(cmd == <span class="hljs-string">&apos;1&apos;</span>)
+                        cap_set_flag(caps, CAP_PERMITTED, <span class="hljs-number">1</span>, &amp;temp, CAP_CLEAR);
+                }
+                <span class="hljs-keyword">if</span>(cap_set_proc(caps))
+                    perror(<span class="hljs-string">&quot;cap_set_proc() ERROR: &quot;</span>);
+                <span class="hljs-keyword">else</span>
+                    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s %s success\n&quot;</span>, (cmd ==<span class="hljs-string">&apos;3&apos;</span>? <span class="hljs-string">&quot;recover&quot;</span>:<span class="hljs-string">&quot;remove&quot;</span>),line);
+
+                cap_free(caps);
+            }
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(cmd == <span class="hljs-string">&apos;4&apos;</span>)
+            do_ping();
+         <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(cmd == <span class="hljs-string">&apos;5&apos;</span>)
+            listCaps();
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(cmd == <span class="hljs-string">&apos;q&apos;</span>)
+            <span class="hljs-keyword">break</span>;
+       sleep(<span class="hljs-number">1</span>);  <span class="hljs-comment">//&#x4F11;&#x7720;1s</span>
+        printInfo();
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>&#x7A0B;&#x5E8F;&#x6D4B;&#x8BD5;&#xFF1A;</p>
+<p>&#x6D4B;&#x8BD5;&#x73AF;&#x5883;&#xFF1A;</p>
+<p><img src="assets/&#x9009;&#x533A;_052.png" alt="&#x9009;&#x533A;_052"></p>
+<p>&#x8FD0;&#x884C;&#x7A0B;&#x5E8F;&#x524D;&#xFF1A;<code>sudo setcap cap_net_raw+eip /bin/ping</code>  &#x4FDD;&#x8BC1;&#x6587;&#x4EF6;&#x6709;<code>eip</code> &#x6743;&#x80FD;</p>
+<ul>
+<li>sudo apt install libcap-dev</li>
+</ul>
+<ul>
+<li>gcc cap.c -lcap -o cap</li>
+<li>sudo ./cap</li>
+</ul>
+<p>&#x4E00;&#x5F00;&#x59CB;&#x53EF;&#x4EE5;<code>ping</code> :</p>
+<p><img src="assets/&#x9009;&#x533A;_053.png" alt="&#x9009;&#x533A;_053"></p>
+<p>&#x6682;&#x65F6;&#x6027;&#x5220;&#x9664;&#x6743;&#x80FD;&#x540E;&#x65E0;&#x6CD5;<code>ping</code> :</p>
+<p><img src="assets/&#x9009;&#x533A;_054.png" alt="&#x9009;&#x533A;_054"></p>
+<p>&#x6062;&#x590D;&#x540E;&#x53EF;&#x4EE5;<code>ping</code>  :</p>
+<p><img src="assets/&#x9009;&#x533A;_055.png" alt="&#x9009;&#x533A;_055"></p>
+<p>&#x6C38;&#x4E45;&#x5220;&#x9664;&#x540E;&#x65E0;&#x6CD5;<code>ping</code> :</p>
+<p><img src="assets/&#x9009;&#x533A;_056.png" alt="&#x9009;&#x533A;_056"></p>
+<h3 id="&#x53C2;&#x8003;&#x8D44;&#x6599;">&#x53C2;&#x8003;&#x8D44;&#x6599;</h3>
+<p><a href="https://www.hrwhisper.me/introduction-to-linux-capability/#comments" target="_blank">Linux setuid&#x4E0E;&#x6743;&#x80FD;&#x4ECB;&#x7ECD;</a></p>
+<p><a href="https://www.wolfcstech.com/2017/07/10/linux-capabilities-overview/" target="_blank">Linux &#x6743;&#x80FD;&#x7EFC;&#x8FF0;</a></p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="栈溢出实验.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: stack overflow">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"setuid & capabilities","level":"1.3","depth":1,"previous":{"title":"stack overflow","level":"1.2","depth":1,"path":"栈溢出实验.md","ref":"栈溢出实验.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"操作系统安全实验二.md","mtime":"2018-04-26T14:48:02.470Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-26T14:09:30.251Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
